@@ -1,5 +1,6 @@
 using Lab1Zadaniev2.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,20 @@ builder.Services.AddDbContext<StudentContext>(opt =>
 opt.UseInMemoryDatabase("StudentList"));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c => {
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Student API",
+        Description = "demo Student API",
+        Version = "v1",
+        Contact = new OpenApiContact
+        {
+            Name = "Example Contact",
+            Url = new Uri("https://adres_strony")
+        },
+    });
+});
 
 var app = builder.Build();
 
@@ -18,7 +32,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    //*9 punkt(?) app.UseSwaggerUI()
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Student API V1");
+    });
 }
 
 app.UseHttpsRedirection();
