@@ -21,33 +21,42 @@ namespace Lab1Zadaniev2.Controllers
         }
 
         // GET: api/Students
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
+        public async Task<ActionResult<IEnumerable<StudentDTO>>> GetStudent()
         {
-          if (_context.Student == null)
-          {
-              return NotFound();
-          }
-            return await _context.Student.ToListAsync();
+            if (_context.Student == null)
+            {
+                return NotFound();
+            }
+            return await _context.Student
+            .Select(x => StudentDTO(x))
+            .ToListAsync();
         }
+
 
         // GET: api/Students/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetStudent(Guid id)
+        public async Task<ActionResult<StudentDTO>> GetStudent(int id)
         {
-          if (_context.Student == null)
-          {
-              return NotFound();
-          }
+            if (_context.Student == null)
+            {
+                return NotFound();
+            }
             var student = await _context.Student.FindAsync(id);
-
             if (student == null)
             {
                 return NotFound();
             }
-
-            return student;
+            return StudentDTO(student);
         }
+        private static StudentDTO StudentDTO(Student student) =>
+ new StudentDTO
+ {
+     Id = student.Id,
+     Name = student.Name,
+     Surname = student.Surname,
+ };
 
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
