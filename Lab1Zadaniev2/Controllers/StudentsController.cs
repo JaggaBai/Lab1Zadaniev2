@@ -79,7 +79,23 @@ namespace Lab1Zadaniev2.Controllers
 
             return NoContent();
         }
-
+        /// <summary>
+        /// Wprowadź studenta
+        /// </summary>
+        /// <param name="student"></param>
+        /// <returns>A newly created Student</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        /// POST /Student
+        /// {
+        /// "id": 1,
+        /// "name": "Anna",
+        /// "surnname": "Zablotni"
+        /// }
+        ///
+        /// </remarks>
+        // POST: api/Students
         // POST: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -95,6 +111,12 @@ namespace Lab1Zadaniev2.Controllers
             return CreatedAtAction("GetStudent", new { id = student.Id }, student);
         }
 
+        /// <summary>
+        /// Usuwanie Studentow z listy.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// 
         // DELETE: api/Students/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(Guid id)
